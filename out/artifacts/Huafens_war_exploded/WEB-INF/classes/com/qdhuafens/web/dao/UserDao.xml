@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdhuafens.web.dao.UserDao">
+    <!-- 登录操作 -->
+    <select id="login" parameterType="String" resultType="com.qdhuafens.web.entity.User" >
+          select * from t_user
+            where username = #{userName} and password = #{password} limit 1;
+    </select>
+
+    <!-- 查询所有用户操作
+    resultType="com.qdhuafens.web.entity.User"
+    -->
+    <select id="qerryUser" resultMap="querryUserMapper">
+        select u.userId,u.userName,u.userPhone,u.userQq,u.userMail,u.position,d.departId,d.departName,d.departFunction
+	        from t_user u ,t_depart d
+	        where u.departId = d.departId;
+    </select>
+
+    <!--PS: column是数据库中的字段，property是实体类中的属性-->
+    <resultMap id="querryUserMapper" type="com.qdhuafens.web.entity.User">
+
+        <id property="userId" column="userId"></id>
+        <result property="userName" column="userName"></result>
+        <result property="userPhone" column="userPhone"></result>
+        <result property="userQq" column="userQq"></result>
+        <result property="userMail" column="userMail"></result>
+        <result property="position" column="position"></result>
+        <!--
+        javaType: 一对一映射的元素的类型
+        -->
+        <association property="depart" javaType="Depart">
+            <id property="departid" column="departId"></id>
+            <result property="departName" column="departName"></result>
+            <result property="departFunction" column="departFunction"></result>
+        </association>
+    </resultMap>
+</mapper>

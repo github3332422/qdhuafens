@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.qdhuafens.web.dao.DepartDao">
+    <!--查询部门-->
+    <select id="qerryDepart" resultType="Depart">
+        select departId,departName,departFunction from t_depart;
+    </select>
+
+    <!--查询部门根据部门id号-->
+    <select id="querryById" resultType="Depart">
+        select departId,departName,departFunction from t_depart where querryById = #{id} ;
+    </select>
+
+    <!--根据提供的部门信息，查询部门-->
+    <select id="qerryByDepart" resultType="Depart">
+        select departId,departName,departFunction from t_depart
+        <where>
+            <if test="departId > 0">
+                and departId = #{departId}
+            </if>
+            <if test="departName != null and departName !=''">
+                and departName = #{departName}
+            </if>
+            <if test="departFunction != null and departFunction !=''">
+                and departFunction = #{departFunction}
+            </if>
+        </where>
+    </select>
+
+    <!--添加部门-->
+    <insert id="addDepart" parameterType="com.qdhuafens.web.entity.Depart">
+        insert into t_depart(departId,departName,departFunction) values(#{departId},#{departName},#{departFunction})
+    </insert>
+
+    <!--删除部门-->
+    <delete id="delteDepart" parameterType="integer">
+        delete from t_depart where departId = #{id}
+    </delete>
+
+    <!--修改部门-->
+    <update id="updataDepart">
+        update t_depart
+        <set>
+            <if test="departName!=null &amp;&amp; departName!=&quot;&quot;">
+                departName = #{departName},
+            </if>
+            <if test="departFunction!=null and departFunction.trim()!=''">
+                departFunction = #{departFunction},
+            </if>
+        </set>
+        where departid = #{id}
+    </update>
+
+</mapper>
